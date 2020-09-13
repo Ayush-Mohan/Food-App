@@ -9,6 +9,7 @@ class Home extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.only(left: 10.0,top: 30.0),
             alignment: Alignment.centerRight,
             color: Colors.indigoAccent,
             child: Column(
