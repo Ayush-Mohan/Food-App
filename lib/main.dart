@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/app_screens/login.dart';
 
-import 'app_screens/home.dart';
+// import 'app_screens/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,9 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food Food',
-      home: Scaffold(
-      body: Home(),
-    ));
+      home: LoginForm(),
+    );
   }
 }
 
