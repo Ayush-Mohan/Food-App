@@ -9,13 +9,16 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  var _formKey = GlobalKey<FormState>();
+
   final double _minimumPadding = 5.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
+          child: Form(
+            key: _formKey,
         child: Padding(
           padding: EdgeInsets.all(_minimumPadding*2),
             child: ListView(
@@ -36,43 +39,41 @@ class _LoginFormState extends State<LoginForm> {
                       color: Colors.black),
                 )
             ),
-            FieldText("Username", "Enter username"),
-            FieldText("Email", "Enter email"),
-            FieldText("Password", "Enter password"),
-            Padding(
-                padding: EdgeInsets.only(
-                  top: _minimumPadding,
-                  bottom: _minimumPadding,
-                ),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      labelText: 'Phone',
-                      labelStyle: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                      hintText: 'Enter phone number',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                )),
+            FieldText("Username", "Please enter username", TextInputType.text),
+            FieldText("Email", "Please enter email", TextInputType.emailAddress),
+            FieldText("Password", "Please enter password", TextInputType.visiblePassword),
+            FieldText("Phone", "Please enter phone number", TextInputType.phone),
             Padding(
               padding: EdgeInsets.only(
-                top: _minimumPadding*5,
+                top: _minimumPadding*8,
                 bottom: _minimumPadding,
               ),
               child: RaisedButton(
-                color: Colors.deepPurpleAccent,
-                textColor: Colors.white,
+                padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
+                color: Colors.indigoAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)
                 ),
                 child: Text(
                   'Sign UP',
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                  textScaleFactor: 1.5,
                 ),
                 onPressed: (){
-                  Home();
+                  setState(() {
+                   if(_formKey.currentState.validate()){
+                     Navigator.push(
+                       context,
+                       MaterialPageRoute(
+                           builder: (context) => Home()
+                       ),
+                     );
+                   }
+                  });
                 },
               ),
             ),
@@ -96,23 +97,57 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget FieldText(String text1, String text2){
+  Widget FieldText(String text1, String text2, TextInputType text3){
+    bool flag = false;
+    if(text1=="Password")
+      flag=true;
+
     return Padding(
         padding: EdgeInsets.only(
           top: _minimumPadding,
           bottom: _minimumPadding,
         ),
-        child: TextField(
+        child: TextFormField(
+          keyboardType: text3,
+          obscureText: flag,
+          validator: (String val){
+            if(val.isEmpty){
+              return text2;
+            }
+          },
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.grey[350],
               labelText: text1,
               labelStyle: TextStyle(
                 fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
               ),
-              hintText: text2,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
+              // hintText: text2,
+              // border: OutlineInputBorder(
+              //     borderRadius: BorderRadius.circular(30.0),
+            errorStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 15.0,
+            ),
+              errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: Colors.grey[350])
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: Colors.grey[350])
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                borderSide: BorderSide(color: Colors.grey[350])
+              ),
+              focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(color: Colors.grey[350])
+              ),
+          ),
         ));
   }
 }
